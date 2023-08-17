@@ -6,10 +6,17 @@ plugins {
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+	id("org.jetbrains.kotlin.plugin.allopen") version "1.3.61"
 }
 
 group = "paxHumana"
 version = "0.0.1-SNAPSHOT"
+
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.Embeddable")
+	annotation("jakarta.persistence.MappedSuperclass")
+}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
