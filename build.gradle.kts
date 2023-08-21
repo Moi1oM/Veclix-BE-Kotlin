@@ -18,6 +18,10 @@ allOpen {
 	annotation("jakarta.persistence.MappedSuperclass")
 }
 
+noArg {
+	annotation("jakarta.persistence.Entity") // 2
+}
+
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
