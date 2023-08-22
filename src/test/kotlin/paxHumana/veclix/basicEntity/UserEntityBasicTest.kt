@@ -49,7 +49,7 @@ class UserEntityBasicTest : BehaviorSpec({
             every { userRepository.existsByEmail(userRequest.email) } returns true
 
             Then("IllegalStateException이 터져야 한다.") {
-                shouldThrow<IllegalStateException> {
+                shouldThrow<IllegalArgumentException> {
                     userService.create(userRequest)
                 }
             }
