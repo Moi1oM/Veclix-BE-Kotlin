@@ -1,41 +1,31 @@
 package paxHumana.veclix.users.domain
 
 import jakarta.persistence.*
-import org.jetbrains.annotations.NotNull
 import paxHumana.veclix.agentBlocks.domain.AgentBlock
 import paxHumana.veclix.common.domain.BaseEntity
 
 @Entity
 @Table(name = "users")
 class User(
-    @Column(nullable = false, unique = true)
-    val email: String,
-    initialUsername: String? = null,
-    initialVcoin: Int? = 0,
-    initialAvatarUrl: String? = null,
-    initialDiscordId: String? = null
-) : BaseEntity() {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int? = null
-        protected set
+    val id: Long? = null,
+
+    @Column(nullable = false, unique = true)
+    val email: String,
 
     @Column(unique = true)
-    var username: String? = initialUsername
-        protected set
+    var username: String? = null,
 
     @Column(name = "vcoin", nullable = false)
-    var vcoin: Int? = initialVcoin
-        protected set
+    var vcoin: Int? = 0,
 
     @Column(name = "avatar_url")
-    var avatarUrl: String? = initialAvatarUrl
-        protected set
+    var avatarUrl: String? = null,
 
     @Column(name = "discord_id", unique = true)
-    var discordId: String? = initialDiscordId
-        protected set
+    var discordId: String? = null
+) : BaseEntity() {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "crafter")
     protected val mutableCraftedBlocks: MutableList<AgentBlock> = mutableListOf()
