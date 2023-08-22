@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import paxHumana.veclix.users.domain.User
 import paxHumana.veclix.users.service.UserResponse
 import paxHumana.veclix.users.service.UserService
 
@@ -33,9 +34,18 @@ class UserController (
     }
 
     @GetMapping
-    fun findUserWithEmail(@RequestParam email: String): ResponseEntity<UserResponse> {
-        return ok(userService.findByEmail(email))
+    fun findUserWithDynamic(@RequestParam email: String?,
+                            @RequestParam username: String?,
+                            @RequestParam discordId: String?): ResponseEntity<List<User>> {
+        return ok(userService.findByEmailAndUsername(
+            email, username, discordId
+        ))
     }
+
+//    @GetMapping
+//    fun findUserWithEmail(@RequestParam email: String): ResponseEntity<UserResponse> {
+//        return ok(userService.findByEmail(email))
+//    }
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long, @RequestBody requestDto: UserRequestDto): ResponseEntity<UserResponse> {

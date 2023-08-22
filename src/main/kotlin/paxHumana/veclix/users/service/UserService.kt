@@ -1,8 +1,10 @@
 package paxHumana.veclix.users.service
 
+import com.querydsl.jpa.impl.JPAQueryFactory
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import paxHumana.veclix.users.controller.UserRequestDto
+import paxHumana.veclix.users.domain.QUser
 import paxHumana.veclix.users.domain.User
 import paxHumana.veclix.users.repository.UserRepository
 import java.time.LocalDateTime
@@ -10,7 +12,8 @@ import java.time.LocalDateTime
 
 @Service
 class UserService (
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val jpaQueryFactory: JPAQueryFactory,
 ) {
     @Transactional
     fun create(request: UserRequestDto?) : UserResponse {
@@ -56,6 +59,18 @@ class UserService (
        val user = userRepository.findByEmail(email)
            ?: throw IllegalArgumentException("해당 email을 가진 유저가 없습니다. email:$email")
         return UserResponse.of(user)
+    }
+
+    fun findByEmailAndUsername(email: String?, username: String?, discordId: String?): List<User> {
+        val qUser = QUser.user
+
+        return jpaQueryFactory.selectFrom(qUser)
+            .where(
+                email?.let { qUser.email.eq(it) },
+                username?.let { qUser.username.eq(it) },
+                discordId?.let { qUser.discordId.eq(it) }
+            )
+            .fetch()
     }
 
     @Transactional

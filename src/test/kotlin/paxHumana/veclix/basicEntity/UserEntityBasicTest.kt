@@ -1,5 +1,6 @@
 package paxHumana.veclix.basicEntity
 
+import com.querydsl.jpa.impl.JPAQueryFactory
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -13,7 +14,8 @@ import paxHumana.veclix.users.service.UserService
 
 class UserEntityBasicTest : BehaviorSpec({
     val userRepository = mockk<UserRepository>()
-    val userService = UserService(userRepository)
+    val jpaFactory = mockk<JPAQueryFactory>()
+    val userService = UserService(userRepository, jpaQueryFactory = jpaFactory)
 
     Given("특정 회원이 가입하려고 할 때") {
         val userRequest = UserRequestDto(
